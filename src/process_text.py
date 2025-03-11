@@ -6,4 +6,8 @@ from heapq import nlargest
 
 nlp = spacy.load('pt_core_news_lg')
 
-print(nlp.pipe_names)
+def process_text(text):
+    doc = nlp(text)
+    
+    print(f"Number of sentences in {text}: ")
+    len(list(doc.sents))
