@@ -19,5 +19,18 @@ def process_text(text):
         if (token.pos_ in pos_tag_list):
             important_words.append(token.text)
             
-    for t in important_words:
-        print(t)
+    words_frequency = find_word_frequency(important_words)        
+    
+    normalize_words_frequency(words_frequency)
+
+def find_word_frequency(keyword):
+    word_frequency = Counter(keyword)
+    
+    return word_frequency
+
+def normalize_words_frequency(words_frequency):
+    max_frequency = words_frequency.most_common(1)[0][1]
+    for word in words_frequency.keys():
+        words_frequency[word] = (words_frequency[word]/max_frequency)
+    
+    return words_frequency.most_common(10)
