@@ -6,6 +6,8 @@ from heapq import nlargest
 
 nlp = spacy.load('pt_core_news_lg')
 
+sentence_strength = {}
+
 def process_text(text):
     doc = nlp(text)
 
@@ -22,6 +24,8 @@ def process_text(text):
     words_frequency = find_word_frequency(important_words)        
     
     normalize_words_frequency(words_frequency)
+    
+    weigh_sentences(doc, words_frequency)
 
 def find_word_frequency(keyword):
     word_frequency = Counter(keyword)
@@ -33,4 +37,14 @@ def normalize_words_frequency(words_frequency):
     for word in words_frequency.keys():
         words_frequency[word] = (words_frequency[word]/max_frequency)
     
-    return words_frequency.most_common(10)
+    return words_frequency
+
+def weigh_sentences(document, words_frequency):
+    for sent in document.sents:
+        for word in sent:
+            if word.text in words_frequency.keys():
+                if sent in sentence_strength.keys():
+                    sentence_strength[sent]+=words_frequency[word.text]
+                else:
+                    sentence_strength[sent] = words_frequency[word.text]
+    print(sentence_strength)
