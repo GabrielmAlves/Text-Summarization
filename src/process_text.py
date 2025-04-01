@@ -26,6 +26,14 @@ def process_text(text):
     normalize_words_frequency(words_frequency)
     
     weigh_sentences(doc, words_frequency)
+    
+    summarized_sentences = nlargest(3, sentence_strength, key=sentence_strength.get)
+    print(summarized_sentences)
+    
+    final_sentences = [ w.text for w in summarized_sentences]
+    summary = ' '.join(final_sentences)
+    
+    return summary 
 
 def find_word_frequency(keyword):
     word_frequency = Counter(keyword)
